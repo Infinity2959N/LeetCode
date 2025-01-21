@@ -12,13 +12,15 @@ public:
         //two pointer approach, we start one from A, other from B
         //When a pointer reaches the end, we move it to the head of the other list
         //Stop when either pA=pB or both become null
+        if(!headA || !headB)    return nullptr;
+        
         ListNode* pA=headA;
         ListNode* pB=headB;
 
         while(pA!=pB){
-            pA=(pA==nullptr)? headB:pA->next;
-            pB=(pB==nullptr)? headA:pB->next;
+            pA=(pA==nullptr)? headB : pA->next;
+            pB=(pB==nullptr)? headA : pB->next;
         }
-        return pA;
+        return pA; //pA will either be the intersection node or null
     }
 };
