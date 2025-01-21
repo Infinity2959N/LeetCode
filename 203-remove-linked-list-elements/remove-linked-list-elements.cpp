@@ -1,6 +1,7 @@
 class Solution {
 public:
     ListNode* removeElements(ListNode* head, int val) {
+        if(!head)   return head;
         // Create a dummy node and point its next to head
         ListNode* dummy = new ListNode();  
         dummy->next = head;
