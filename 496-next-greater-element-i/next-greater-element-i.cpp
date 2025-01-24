@@ -5,16 +5,17 @@ public:
         unordered_map<int,int> nextGreater;
 
         for(int i=nums2.size()-1; i>=0; i--){
-            while(!st.empty() && nums2[i] > st.top()){
+            int num=nums2[i];
+            while(!st.empty() && num > st.top()){
                 st.pop();
             }
  
             if(!st.empty()){ 
-                nextGreater[nums2[i]]=st.top();
+                nextGreater[num]=st.top();
             }
-            else nextGreater[nums2[i]]=-1;
+            else nextGreater[num]=-1;
 
-            st.push(nums2[i]);
+            st.push(num);
         }
 
         for(int i=0; i< nums1.size(); i++){
