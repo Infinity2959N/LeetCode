@@ -1,34 +1,28 @@
-#include <stack>
-using namespace std;
-
 class MinStack {
-private:
-    stack<int> mainStack;
-    stack<int> minStack;
-
 public:
-    MinStack() {}
+	stack<int>s;
+	int minElement = INT_MAX;//initalize with max value
+	void push(int val) {
+		if(minElement>=val){// whenever val is lesser than current minElement, store current minElement in stack and make val as current minElement
+			s.push(minElement);
+			 minElement = val;
+		}
+		  s.push(val);
+	}
+	void pop() {
+		if(minElement==s.top()){//top is minElement then previous element will be previous minElement, so pop and store current top as current MinElement
+			s.pop();
+			minElement = s.top();
+		}
+		s.pop();
+	}
 
-    void push(int val) {
-        mainStack.push(val);
-        if (minStack.empty() || val <= minStack.top()) {
-            minStack.push(val);
-        }
+    int top() {// return stack top
+        return s.top();
     }
 
-    void pop() {
-        if (mainStack.top() == minStack.top()) {
-            minStack.pop();
-        }
-        mainStack.pop();
-    }
-
-    int top() {
-        return mainStack.top();
-    }
-
-    int getMin() {
-        return minStack.top();
+    int getMin() {//return minElement
+        return minElement;
     }
 };
 
