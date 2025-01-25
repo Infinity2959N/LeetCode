@@ -14,14 +14,14 @@ public:
             }
         }
 
-        string result="";
+        s="";
         while(!st.empty()){
             char ch=st.top().first;
             int count=st.top().second;
             st.pop();
 
-            result= string(count,ch)+result;    //add character count times
+            s= string(count,ch)+s;    //add character count times
         }
-        return result;
+        return s;
     }
 };
