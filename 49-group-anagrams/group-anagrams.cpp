@@ -5,7 +5,7 @@ public:
 
         for(const string& s: strs){
             string key=s;
-            stable_sort(key.begin(),key.end());
+            sort(key.begin(),key.end());
             set[key].push_back(s);
         }
 
