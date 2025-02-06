@@ -10,7 +10,6 @@
 class Solution {
 public:
     int guessNumber(int n) {
-        if(n==1) return n;
         int beg=1, end=n;
         while(beg <= end){
             int num =beg+ (end-beg)/2;
@@ -23,6 +22,6 @@ public:
                 return num;
             }
         }
-        return beg;
+        return -1;
     }
 };
