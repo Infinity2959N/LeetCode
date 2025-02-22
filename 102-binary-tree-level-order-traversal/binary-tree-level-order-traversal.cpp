@@ -18,7 +18,7 @@ public:
         queue<TreeNode*> q;
         q.push(root);
 
-        while(q.size() > 0){
+        while(!q.empty()){
             vector<int> currLevel;
             int size= q.size();
             for(int i=0; i< size; i++){
