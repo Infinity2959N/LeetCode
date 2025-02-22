@@ -19,7 +19,7 @@ public:
         q.push(root);
 
         while(!q.empty()){
-            vector<int> currLevel;
+            int currLevel;
             int size= q.size();
             for(int i=0; i< size; i++){
                 TreeNode* node= q.front();
@@ -28,10 +28,10 @@ public:
                 if(node->left) q.push(node->left);
                 if(node->right) q.push(node->right);
 
-                currLevel.push_back(node->val);
+                currLevel = (node->val);
             }
 
-            res.push_back(currLevel.back());
+            res.push_back(currLevel);
         }
 
         return res;    
