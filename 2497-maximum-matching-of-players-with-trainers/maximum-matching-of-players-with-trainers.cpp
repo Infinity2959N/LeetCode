@@ -1,17 +1,16 @@
 class Solution {
 public:
     int matchPlayersAndTrainers(vector<int>& players, vector<int>& trainers) {
-        if(players.empty() || trainers.empty()) return 0;
-        sort(players.begin(), players.end());
-        sort(trainers.begin(), trainers.end());
+        sort(players.begin(), players.end(), greater<>());
+        sort(trainers.begin(), trainers.end(), greater<>());
 
-        int i=0, j=0, s1= players.size(), s2= trainers.size();
+        int j=0;
 
-        while(i< s1 && j<s2){
-            if(trainers[j++] >= players[i]){
-                i++;
+        for(int i=0; i<players.size(); i++){
+            if(j<trainers.size() && players[i]<=trainers[j]){
+                j++;
             }
         }
-        return i;
+        return j;
     }
 };
