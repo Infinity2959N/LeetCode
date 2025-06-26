@@ -18,7 +18,7 @@ private:
     void DFS(vector<vector<char>>& grid, int i, int j, int m, int n){
         if(i<0 || i>=m || j<0 || j>=n || grid[i][j]=='0')   return;
         
-        if(grid[i][j]=='1') grid[i][j]='0';
+        grid[i][j]='0';
 
         DFS(grid, i-1, j, m, n);
         DFS(grid, i+1, j, m, n);
