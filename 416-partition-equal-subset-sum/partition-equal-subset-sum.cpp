@@ -17,7 +17,8 @@ public:
 
         for(int num: nums){
             for(int sum=target; sum>= num; sum--){
-                dp[sum]= dp[sum] || dp[sum-num];
+                dp[sum]= dp[sum] || dp[sum-num];    //either choose or skip
+                if(dp[target])  return true;
             }
         }
 
