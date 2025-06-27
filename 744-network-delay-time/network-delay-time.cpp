@@ -15,10 +15,16 @@ public:
         vector<int> dist(n+1, INT_MAX);
         dist[k]=0;
 
+        // Build visited array: optimization
+        vector<bool> visited(n + 1, false);
+
         // Standard Dijkstra
         while(!pq.empty()){
             auto [time, node]= pq.top();
             pq.pop();
+
+            if (visited[node]) continue;
+            visited[node] = true;
 
             for(auto&[neighbor, weight]: graph[node]){
                 if(dist[neighbor]> time+weight){
