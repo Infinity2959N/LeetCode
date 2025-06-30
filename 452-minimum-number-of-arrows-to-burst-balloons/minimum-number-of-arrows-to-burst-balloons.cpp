@@ -7,8 +7,9 @@ public:
         
         int arrows= 1;
         int arrowPos= points[0][1]; //Keep at end position of the first sorted index
-        
-        for(int i=0; i<points.size(); i++){
+        int n= points.size();
+
+        for(int i=1; i<n; i++){
             if(points[i][0]> arrowPos){
                 arrows++;
                 arrowPos= points[i][1];
