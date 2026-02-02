@@ -1,31 +1,28 @@
 class Solution {
 public:
     vector<int> topKFrequent(vector<int>& nums, int k) {
+       // Hint: Heap: Maintain a max_heap that sorts based on frequency and then return the top k.
+       // Hint (alternative): Bucket sort.
+
+        // Heap Approach: Store all in a hashmap where value is the frequency
+        // Store it in a min heap (based on freq) of size k
         unordered_map<int,int> map;
-        for(int num: nums){
-            map[num]++;
+        for(auto i : nums){
+            map[i]++;
         }
-        
-        //we have to return k elements that have the highest frequency
-        // Step 2: Use a min-heap to store the top k elements
-    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> minHeap;
-    
-    for (auto& entry : map) {
-        minHeap.push({entry.second, entry.first});  // Insert frequency and element into heap
-        
-        // If the heap exceeds size k, remove the element with the smallest frequency
-        if (minHeap.size() > k) {
-            minHeap.pop();
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        vector<int> ans;
+
+        for(auto it: map){
+            pq.push({it.second, it.first});
+            if(pq.size()>k)
+                pq.pop();
         }
-    }
-    
-    // Step 3: Extract the result from the heap
-    vector<int> result;
-    while (!minHeap.empty()) {
-        result.push_back(minHeap.top().second);  // Push the element (not the frequency) to result
-        minHeap.pop();
-    }
-    
-    return result;
+
+        while(!pq.empty()){
+            ans.push_back(pq.top().second);
+            pq.pop();
+        }
+        return ans;
     }
 };
