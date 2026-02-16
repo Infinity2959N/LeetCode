@@ -1,16 +1,17 @@
 class Solution {
 public:
     int majorityElement(vector<int>& nums) {
-        unordered_map<int,int> mp;
-        for(int i: nums){
-            mp[i]++;
-        }
-        int size=nums.size() / 2;
-        for(auto x: mp){
-            if(x.second > size){
-                return x.first;
+        int count=0;
+        int candidate;
+        for(auto num: nums){
+            if(count==0){
+                candidate=num;
+                count++;
             }
+            else if(num==candidate) count++;
+            else count--;  
         }
-        return 0;
+        // No need to verify, if majority element definitely exists in the array, it would be the candidate
+         return candidate;
     }
 };
