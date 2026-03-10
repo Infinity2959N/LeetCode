@@ -1,15 +1,21 @@
 class Solution {
 public:
     int lengthOfLIS(vector<int>& nums) {
-        vector<int> dp(nums.size(), 1);
+        // Pattern: Non constant transition
 
-        for(int i=1; i<nums.size(); i++){
+        int n= nums.size();
+        vector<int> dp(n, 1);   // Each makes a subsequene with itself
+        for(int i=1; i<n; i++){
             for(int j=0; j<i; j++){
-                if(nums[i]> nums[j] && dp[i]< dp[j]+1){
-                    dp[i]= dp[j]+1;
+                if(nums[j]< nums[i]){
+                    dp[i]= max(dp[i], dp[j]+1);
                 }
             }
         }
-        return *max_element(dp.begin(), dp.end());
+        int maxi=1;
+        for(int n: dp){
+            maxi= max(maxi, n); 
+        }
+        return maxi;
     }
 };
