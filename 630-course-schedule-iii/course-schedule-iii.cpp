@@ -1,31 +1,28 @@
 class Solution {
 public:
     int scheduleCourse(vector<vector<int>>& courses) {
-        // Approach:
-        // Step 1: Sort on last dates, so that we are always picking one with less end dates first
-        // Step 2: use max heap to track duration of courses we have taken so far
+        // Greedy (sorting) with Regret (max heap)
 
-        sort(courses.begin(), courses.end(), [](const vector<int>& a, const vector<int>& b){
-            return a[1]< b[1]; 
+        // Step 1: Sort by deadline
+        sort(courses.begin(), courses.end(), [](auto& a, auto& b){
+            return a[1]< b[1];
         });
 
-        priority_queue<int> maxHeap;
+        priority_queue<int> pq; // Max heap to store duratins of courses taken
         int totalTime=0;
 
-        for(auto& course: courses){
-            int duration= course[0];
-            int deadline= course[1];
+        for(auto& c: courses){
+            int duration= c[0], deadline= c[1];
+            if(duration> deadline) continue;    // Skip impossible courses
+            totalTime+=duration;
+            pq.push(duration);
 
-            totalTime+= duration;
-            maxHeap.push(duration);
-
-            // Exceeded the current course deadline
+            // Regret step: If oveshot the deadline, ditch the longest course
             if(totalTime> deadline){
-                totalTime-= maxHeap.top();
-                maxHeap.pop();
+                totalTime-= pq.top();
+                pq.pop();
             }
         }
-
-        return maxHeap.size();
+        return pq.size();
     }
 };
