@@ -1,23 +1,32 @@
 class Solution {
 public:
     int maximalSquare(vector<vector<char>>& matrix) {
-        int n= matrix.size(), m=matrix[0].size();
-        vector<vector<int>> dp(n+1, vector<int>(m+1, 0));
+        // DP formula: if val==1-> 1+ min(top, left, diagonal)
+        int m= matrix.size();   // rows
+        int n= matrix[0].size();    // columns
 
-        int maxi=0;
-        for(int i=1; i<=n; i++){
-            for(int j=1; j<=m; j++){
-                if(matrix[i-1][j-1]=='1'){
-                    int top= dp[i-1][j];
-                    int up= dp[i][j-1];
-                    int diagonal= dp[i-1][j-1];
-                    
-                    dp[i][j] = 1 + min({top, up, diagonal});
-                    
-                    maxi= max(maxi, dp[i][j]);
+        int diag=0, maxi=0;
+        vector<int> dp(n);
+        for(int j=0; j<n; j++){
+            dp[j]= matrix[0][j]-'0';
+            maxi= max(dp[j], maxi);
+        }
+
+        for(int i=1; i<m; i++){ //rows
+            diag= dp[0];    // Diagonal for next element of top+1th row
+            dp[0]= matrix[i][0]-'0';
+            maxi= max(dp[0], maxi);
+            for(int j=1; j< n; j++){
+                int temp= dp[j];
+                if(matrix[i][j]=='1'){
+                    dp[j]= 1+ min({dp[j], dp[j-1], diag});
+                    maxi= max(dp[j], maxi);
+                }else{
+                    dp[j]=0;
                 }
+                diag= temp;
             }
         }
-        return maxi*maxi;   //need to return area
+        return pow(maxi,2);
     }
 };
