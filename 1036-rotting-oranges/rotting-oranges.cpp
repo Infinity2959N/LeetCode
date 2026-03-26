@@ -1,54 +1,44 @@
 class Solution {
 public:
     int orangesRotting(vector<vector<int>>& grid) {
-        // This code will use multi source BFS
-        // In a multi source BFS, we insert all the "rotten oranges" in the queue initially.
-        int rows= grid.size();
-        int cols= grid[0].size();
-        
-        queue<pair<int, int>> q;
-        
         int fresh=0;
-        
-        for(int r=0; r< rows; r++){
-            for(int c=0; c< cols; c++){
-                if(grid[r][c]==2){
-                    q.push({r,c});  // Queue stores the index (that is row and column).
-                }else if(grid[r][c]==1){
+        int m=grid.size(), n= grid[0].size();
+        queue<pair<int, int>> rotten;
+
+        for(int i=0; i<m; i++){
+            for(int j=0; j<n; j++){
+                if(grid[i][j]==1)
                     fresh++;
-                }
+                if(grid[i][j]==2)   
+                    rotten.push({i,j});
             }
         }
+        if(fresh==0)    return 0;
 
-        return bfs(grid, q, fresh);
-    }
-private:
-    int bfs(vector<vector<int>>& grid, queue<pair<int, int>>& q, int freshCount){
-        int rows= grid.size();
-        int cols= grid[0].size();
+        set<pair<int, int>> directions={{0,1}, {0,-1}, {1,0}, {-1,0}};
 
-        int minutes=0;
+        int time= 0;
 
-        vector<pair<int, int>> directions={{0,1}, {1,0}, {0,-1}, {-1, 0}}; //right, down, left, up
-        while(!q.empty() && freshCount > 0){
-            int levelSize=q.size();
-
-            for(int i=0; i<levelSize; i++){
-                auto [r,c]= q.front();
-                q.pop();
-                for(auto [dr, dc]: directions){
-                    int nr= r+dr;   //next row 
-                    int nc= c+dc;   //net column
-                    // Adding the direction to rows and columns to move across all the 4 directions.
-                    if(nr>=0 && nr< rows    &&    nc>=0 && nc< cols    &&    grid[nr][nc]==1){
-                        grid[nr][nc]=2; //rot it!
-                        freshCount--;
-                        q.push({nr, nc});
+        while(!rotten.empty()){
+            // For each second we process every rotten currently in the queue
+            int size= rotten.size();
+            for(int i=0; i<size; i++){
+                auto [x,y]= rotten.front();
+                rotten.pop();
+                for(auto& [xi, yi] : directions){
+                    int xd=x+xi;
+                    int yd=y+yi;
+                    if(xd>=0 && xd<m && yd>=0 && yd<n && grid[xd][yd]==1){
+                        fresh--;
+                        grid[xd][yd]=2;
+                        rotten.push({xd, yd});
                     }
                 }
             }
-            minutes++; // For every level +1 minute. (Not for every single rotten, but for a level!)
+            time++;
+            if(fresh==0)    break;
         }
-        return (freshCount==0)? minutes: -1;
+
+        return fresh==0? time: -1;
     }
 };
