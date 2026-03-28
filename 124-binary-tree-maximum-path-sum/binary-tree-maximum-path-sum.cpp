@@ -9,31 +9,34 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
-
-/*
-Four options at each node:
-1. Take the node only
-2. Take left path
-3. Take right node
-4. Take the entire left+node+right path. 
-*/
 class Solution {
-    int globalMax= INT_MIN; // declaring in the scope of the class for access by all
+    int maxSum= INT_MIN;    // Global tracker
 public:
     int maxPathSum(TreeNode* root) {
-        dfs(root);
-        return globalMax;
-    }
+        // For any node u, there are 2 paths that include u
+        // 1. The rainbow: Starting from left subtree, goes through u, to right subtree
+        // 2. The line: Path comes from parent, picks u, and bigger of left or right subtree
 
+        // Strategy: Max tracker
+        // We use a global (or class level) variable maxSum to keep track of rainbow path, while our recursion function only returns the line to the parent
+
+        // Math: 
+        // For each node: Left gain= max(0, dfs(node->left)), and similar for right. We use 0 for "clipping" if the value becomes negative. (Instead of taking a negative sum path, better not take a path at all)
+        // The rainbow: node->val+ leftgain+ rightgain
+        // The line: node->val+ max(leftgain, rightgain); what we send to parent
+        solve(root);
+        return maxSum;
+    }
 private:
-    int dfs(TreeNode* node){
+    int solve(TreeNode* node){
         if(!node)   return 0;
 
-        int left= max(0, dfs(node->left));
-        int right= max(0, dfs(node->right));
+        int leftgain= max(0, solve(node->left));
+        int rightgain= max(0, solve(node->right));
 
-        globalMax= max(globalMax, left+ node->val + right);
+        int currPathSum= node->val+ leftgain+ rightgain;    // rainbow sum
+        maxSum= max(maxSum, currPathSum);
 
-        return node->val+ max(left, right);    // We can't go both left and right as we eed to return a linear left/ right branch. Consider node to be left/right child of a parent node here
+        return node->val+ max(leftgain, rightgain); // The Line
     }
 };
