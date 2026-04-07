@@ -1,43 +1,16 @@
 class Solution {
 public:
     int change(int amount, vector<int>& coins) {
-        int n= coins.size();
-        vector<vector<unsigned int>> dp(n+1, vector<unsigned int>(amount+1, 0)); // to prevent signed integer overflow
-        
-        //first row 1: as only 1 way to have 0 value: have no coins
-        for(int i=0; i<=n; i++){
-            dp[i][0]= 1;
-        }
+        // Infinite coins: unbounded dp-> no reverse loop
+        // Knapsack: from 0 to amount, try to find the ways a sum from givem denomination can be made
+        vector<double> dp(amount+1, 0); // Init with 0 because 0 ways to make every sum with 0 coins
+        dp[0]= 1; // One way to make sum of 0 using 0 coins
 
-        // Two options now: Use coin or don't use coin
-        for(int i=1; i<=n; i++){
-            for(int j=1; j<=amount; j++){
-                dp[i][j]= dp[i-1][j];   //don't use coin
-                if(j >= coins[i-1])     // base case handling: amount>= denomination of the coin
-                    dp[i][j]+= dp[i][j-coins[i-1]];     //use coin
+        for(auto coin: coins){
+            for(int j= coin; j<=amount; j++){
+                dp[j]+= dp[j-coin];
             }
         }
-
-        return dp[n][amount];
+        return (int)dp[amount];
     }
 };
-
-/*
-Space optimised way:
-class Solution {
-public:
-    int change(int amount, vector<int>& coins) {
-        vector<int> dp(amount + 1, 0);
-        dp[0] = 1;  // Base case: one way to make amount 0
-
-        for (int coin : coins) {
-            for (int j = coin; j <= amount; ++j) {
-                dp[j] += dp[j - coin];
-            }
-        }
-
-        return dp[amount];
-    }
-};
-
-*/
