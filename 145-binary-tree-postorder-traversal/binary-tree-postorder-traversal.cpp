@@ -12,16 +12,15 @@
 class Solution {
 public:
     vector<int> postorderTraversal(TreeNode* root) {
-        vector<int> visited_nodes;
-        traverse(root, &visited_nodes);
-        return visited_nodes;
+        vector<int> ans;
+        traverse(root, ans);
+        return ans;
     }
 private:
-    void traverse(TreeNode* root, vector<int> *visited){
-        if(!root)   return;
-
-        traverse(root->left, visited);
-        traverse(root->right, visited);
-        visited->push_back(root->val);
+    void traverse(TreeNode* node, vector<int>& ans){
+        if(!node) return;
+        traverse(node->left, ans);
+        traverse(node->right, ans);
+        ans.push_back(node->val);
     }
 };
