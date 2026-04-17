@@ -12,17 +12,16 @@
 class Solution {
 public:
     bool isValidBST(TreeNode* root) {
-          if(!root) return true;
-
-          return checkValid(root, LONG_MIN, LONG_MAX);
+        // Hint for an elegant approach: A tree is a valid BST if and only if its Inorder Traversal results in a strictly increasing sorted array.
+        return isValid(root, LLONG_MAX, LLONG_MIN);
     }
 private:
-    bool checkValid(TreeNode* root, long min_val, long max_val){
-        if(!root)   return true;
+    bool isValid(TreeNode* root, long long maxval, long long minval){
+        if(!root) return true;
+        if(root->val>= maxval || root->val<=minval) return false;
 
-        if(root->val <= min_val || root->val >= max_val)  return false;
-
-        return checkValid(root->left, min_val, root->val) && 
-               checkValid(root->right, root->val, max_val);
+        bool left= isValid(root->left, root->val, minval);
+        bool right= isValid(root->right, maxval, root->val);
+        return left && right;
     }
 };
