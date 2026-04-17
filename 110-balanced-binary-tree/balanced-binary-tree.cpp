@@ -12,20 +12,15 @@
 class Solution {
 public:
     bool isBalanced(TreeNode* root) {
-        int diff=0;
-        height(root, diff);
-
-        return diff<=1;
+        // Approach: For each node, find the height of left and right subtree, if the absolute difference is more than 1, it's not a balanced BST
+        return findBalanced(root)>=0? true: false;
     }
 private:
-    int height(TreeNode* root, int& diff){
-        if(!root)   return 0;
+    int findBalanced(TreeNode* node){
+        if(!node) return 0;
+        int left= findBalanced(node->left);
+        int right= findBalanced(node->right);
 
-        int left=height(root->left, diff);
-        int right=height(root->right, diff);
-
-        diff=max(diff, abs(left-right));
-        //If for any node the diff will be greater than 1, it will be stored
-        return max(left, right)+1;
+        return (left==-1 || right==-1 || abs(left-right)>1)? -1: max(left,right)+1;
     }
 };
