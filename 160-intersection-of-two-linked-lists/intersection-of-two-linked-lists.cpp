@@ -9,18 +9,14 @@
 class Solution {
 public:
     ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
-        //two pointer approach, we start one from A, other from B
-        //When a pointer reaches the end, we move it to the head of the other list
-        //Stop when either pA=pB or both become null
-        if(!headA || !headB)    return nullptr;
-        
-        ListNode* pA=headA;
-        ListNode* pB=headB;
-
+        // Easy O(n) space solution: traverse one list, put them all in a hash set
+        // Solution 2: Traverse both, find their length, move pointer for longer list forward to be wqual to distance of smaller pointer, then move both together
+        // Best Solution: Two pointer technique: Move pointers from both the lists, when one pointer reaches the end of the list, it switches to head of the other list: Two pointers eventually meet the intersection, if no intersection, they reach null at the same time
+        ListNode *pA= headA, *pB= headB;
         while(pA!=pB){
-            pA=(pA==nullptr)? headB : pA->next;
-            pB=(pB==nullptr)? headA : pB->next;
+            (pA)? pA= pA->next: pA=headB;
+            (pB)? pB= pB->next: pB=headA;
         }
-        return pA; //pA will either be the intersection node or null
+        return pA;
     }
 };
