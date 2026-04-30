@@ -10,18 +10,19 @@
  * };
  */
 class Solution {
+    vector<int> vals;
 public:
     int kthSmallest(TreeNode* root, int k) {
-        return inorder(root, k);
+        // Inorder traversal gives array in sorted form, we can use that
+        traverse(root);
+        return vals[k-1];
     }
 private:
-    int inorder(TreeNode* root, int& k){
-        if(!root)   return 0;
-        int left= inorder(root->left, k);
+    void traverse(TreeNode* node){
+        if(!node) return;
 
-        if(k==0)    return left;
-        if(--k==0)  return root->val;
-
-        return inorder(root->right, k);
+        traverse(node->left);
+        vals.push_back(node->val);
+        traverse(node->right);
     }
 };
